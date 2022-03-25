@@ -9,7 +9,7 @@ import Char "mo:base/Char";
 import Iter "mo:base/Iter";
 import Int "mo:base/Int";
 import Text "mo:base/Text";
-
+import Blob "mo:base/Blob";
 
 
 actor {
@@ -74,7 +74,70 @@ actor {
     };
     // capitalize_text("test")->"TEST"
 
+    // Challenge 6
+    public func is_inside(t: Text, c: Char) : async Bool {
+        for (char in t.chars()){
+            if (char == c) return true;
+        };
+        return false;
+    };
+    // is_inside("test", 116)->true, is_inside("test", 117)->false
 
+    // Challenge 7
+    public func  trim_whitespace(t: Text) : async Text {
+        var text = t;
+        let n : Nat32 = 32;
+        let c_from_n : Char = Char.fromNat32(n);
+        let c : Text.Pattern = #char c_from_n;
+        text := Text.replace(text, c, "");   //cを""で置き換え
+        text := Text.trim(text, c);          //文字列前後をtrim
+        return text;
+    };
+    // trim_whitespace(" t e s t ")->"test"
 
+    // Challenge 8
+    public func duplicated_character(t: Text) : async Text {
+        var i: Nat = 0;
+        let n: Nat32 = 0;
+        var one_before: Char = Char.fromNat32(n);
+        for (char in t.chars()){
+            switch(i){
+                case(0){
+                    one_before := char;
+                };
+                case(_){
+                    if (char == one_before){
+                        return Char.toText(char);
+                    };
+                    one_before := char;
+                };
+            };
+        };
+        return t;
+    };
+    // duplicated_character("challenge")->"l"
+
+    // Challenge 9
+    public func size_in_bytes(t: Text) : async Nat {
+        let b: Blob = Text.encodeUtf8(t);
+        return b.size();
+    };
+    // size_in_bytes("test")->4
+
+    // challenge 10
+    public func bubble_sort(arr: [Nat]) : async [Nat] {
+        var sorted_arr:[var Nat] = Array.thaw<Nat>(arr);
+        for (i0 in Iter.range(0, sorted_arr.size()-1)){
+            for (i1 in Iter.range(i0+1, sorted_arr.size()-1)){
+                if (sorted_arr[i0] >= sorted_arr[i1]) {
+                    let n = sorted_arr[i0];
+                    sorted_arr[i0] := sorted_arr[i1];
+                    sorted_arr[i1] := n;
+                };
+            };
+        };
+        return Array.freeze(sorted_arr);
+    };
+    // bubble_sort([4, 2, 7])->[2, 4, 7]
   
 };
