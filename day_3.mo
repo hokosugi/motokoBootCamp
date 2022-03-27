@@ -4,6 +4,7 @@ import Char "mo:base/Char";
 import Nat "mo:base/Nat";
 import Iter "mo:base/Iter";
 import Int "mo:base/Int";
+import List "mo:base/List";
 
 actor {
     // Challenge 1
@@ -25,7 +26,7 @@ actor {
         return arr;
     };
 
-    // Challenge 3 Char.isDigitをつかった方が良いかも
+    // Challenge 3 
     public func seven(arr: [Nat]) : async Text {
         let t: Text = "Seven is found";
         let f: Text = "Seven not found";
@@ -39,16 +40,17 @@ actor {
         return f;
     };
     // Challenge 4
-    public func nat_opt_to_nat(n: ?Nat, m: Nat) : async ?Nat {
+    public func nat_opt_to_nat(n: ?Nat, m: Nat) : async Text {
         switch (n) {
-            case(?Nat){
-                return n;
-            };
             case(null){
-                return ?m;
+                return Nat.toText(m);
+            };
+            case(?something){
+                return Nat.toText(something);
             };
         };
     };
+    // nat_opt_to_nat(null, 10)->10
 
     // Challenge 5
     public func day_of_the_week(n: Nat) : async ?Text {
@@ -58,6 +60,55 @@ actor {
         };
         return null;
     };
+    // day_of_the_week(0)-> "Monday"
 
+    // Challenge 6
+    public func populate_array(arr: [?Nat]) : async [Nat] {
+        let not_null_arr = Array.mapFilter<?Nat, Nat>(
+            arr,
+            func(x: ?Nat): ?Nat {
+                if(x==null) ?0 else x
+            }
+        );
+        return not_null_arr;
+    };
+    // populate_arry([1, 2,  , 4,  , 6])-> [1, 2, 0, 4, 0, 6]
+
+    // Challenge 7
+    public func sum_of_array(arr: [Nat]) : async Nat {
+        return Array.foldLeft<Nat, Nat>(
+            arr,
+            0,
+            func(x: Nat, y: Nat): Nat {x+y}
+        )
+    };
+    // sum_of_array([1, 2, 3, 9])->15
+
+    // Challenge 8
+    public func squared_array(arr: [Nat]) : async [Nat] {
+        return Array.map<Nat, Nat>(
+            arr,
+            func(x: Nat){Nat.pow(x, 2)}
+        )
+    };
+    // squared_array([1, 2, 3, 9])-> [1, 4, 9, 81]
+
+    // Challenge 9
+    public func increase_by_index(arr: [Nat]) : async [Nat] {
+        return Array.mapEntries<Nat, Nat>(
+            arr,
+            func(x: Nat, i: Nat){x+i}
+        )
+    };
+    // increase_by_index([1, 2, 3, 9])->[1, 3, 5, 12]
+
+    // Challenge 10
+    private func contains<A>(arr: [A], a: A, f: ((A, A))->Bool) : async Bool {
+        let array = Array.thaw<A>(arr);
+        for (v in array.vals()){
+            if (f(v, a)) return true;
+        };
+        return false;
+    };
 
 };
