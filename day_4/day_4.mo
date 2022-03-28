@@ -1,5 +1,9 @@
 import Array "mo:base/Array";
+import Nat32 "mo:base/Nat32";
+import Char "mo:base/Char";
 import Nat "mo:base/Nat";
+import Iter "mo:base/Iter";
+import Int "mo:base/Int";
 import List "mo:base/List";
 
 import Favorite_type "custom";
@@ -28,18 +32,20 @@ actor {
     public func create_animal_then_takes_a_break(s: Text, e: Nat) : async Animal {
         let animal: Animal = {
             species = s;
-            enegy = e + 10;
+            energy = e;
         };
-        return animal;
+        let animal_sleep = Animal.animal_sleep(animal);
+        return animal_sleep;
     };
 
     // Challenge 5
     public type List<Animal> = ?(Animal, List<Animal>);
-    // さんこうまでに
+    var list_animals = List.nil<Animal>();
+    // 参考までに
     public func sample(l : List<Animal>) : async List<Animal> {
         let animal: Animal = {
             species = "cat";
-            enegy = 10;
+            energy = 10;
         };
         return List.push(animal, l);    
     };
