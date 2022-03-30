@@ -6,8 +6,10 @@ import Iter "mo:base/Iter";
 import Int "mo:base/Int";
 import List "mo:base/List";
 
+
 import Favorite_type "custom";
 import Animal "animal";
+import module_list "list";
 
 
 actor {
@@ -39,9 +41,9 @@ actor {
     };
 
     // Challenge 5
-    public type List<Animal> = ?(Animal, List<Animal>);
+    public type List<Animal> = ?(Animal, List<Animal>); // list.moで利用
     var list_animals = List.nil<Animal>();
-    // 参考までに
+    // さんこうまでに
     public func sample(l : List<Animal>) : async List<Animal> {
         let animal: Animal = {
             species = "cat";
@@ -50,6 +52,38 @@ actor {
         return List.push(animal, l);    
     };
 
+    // Challenge 6
+    public func push_animal(a: Animal) : async () {
+        list_animals := List.push(a, list_animals);
+    };
+    public func get_animals() : async [Animal] {
+        let array_animals = List.toArray(list_animals);
+        return array_animals;
+    };
 
-  
+    // Challenge 7 *課題ではないものの実行するのに
+    public func challenge7(l: List<Text>) : async Bool {
+        return module_list.is_null<Text>(l);
+    };
+
+    // Challenge 8 *課題ではないものの実行するのに
+    public func challenge8(l: List<Text>) : async ?Text {
+        return module_list.last<Text>(l);
+    };
+
+    // Challenge 9 *課題ではないものの実行するのに
+    public func challenge9(l: List<Text>) : async Nat {
+        return module_list.size<Text>(l);
+    };
+
+    // Challenge 10 *課題ではないものの実行するのに
+    public func challenge10(l: List<Text>, n: Nat) : async ?Text {
+        return module_list.get<Text>(l, n);
+    };
+ 
+    // Challenge 11 *課題ではないものの実行するのに
+    public func challenge11(l: List<Text>) : async List<Text> {
+        return module_list.reverse<Text>(l);
+    };
+
 };
