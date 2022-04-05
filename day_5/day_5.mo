@@ -63,9 +63,10 @@ actor {
     };
 
     // Challenge 7
+    let other_canister : actor {deposit_cycles : () -> async Nat} = actor("CANISTER_ID"); //from deposit_cycles canister
     private func withdraw_cycles(n: Nat) : async Nat {
         Cycle.add(n);
-        await deposit_cycles(); //from deposit_cycles canister ex.FromCanister.deposit_cycles();
+        await other_canister.deposit_cycles(); 
     };
     
     // Challenge 8
@@ -76,6 +77,8 @@ actor {
     public func get_version() : async Nat {
         return version_number;
     };
+
+    // Challenge 9 see challnege_9.mo
 
     // Challenge 10 see challenge_10.mo
     
