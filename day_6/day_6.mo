@@ -20,7 +20,7 @@ actor {
     private stable var registry_state : [(TokenIndex, Principal)] = [];
 
     // Challenge 2
-    var registry: HashMap.HashMap<TokenIndex , Principal> = HashMap.HashMap(0, Nat.equal, Hash.hash);
+    var registry: HashMap.HashMap<TokenIndex , Principal> = HashMap.fromIter(registry_state.vals(), 0, Nat.equal, Hash.hash);
 
     // Challenge 3
     stable var nextTokenIndex: Nat = 0;
